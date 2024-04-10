@@ -48,23 +48,6 @@ func NewRectangle(w float64, h float64, c Calc) *Rectangle {
 }
 
 // 5.Define the logic of shape methods
-func (c *Circle) perimeter() float64 {
-	return c.calc.perimeter()
-}
-
-func (c *Circle) area() float64 {
-	return c.calc.area()
-}
-
-func (r *Rectangle) perimeter() float64 {
-	return r.calc.perimeter()
-}
-
-func (r *Rectangle) area() float64 {
-	return r.calc.area()
-}
-
-// 6.Define consumer methods provider
 func (s *CircleImpl) perimeter() float64 {
 	return 2 * math.Pi * (s.radius)
 }
@@ -79,6 +62,23 @@ func (r *RectangleImpl) perimeter() float64 {
 
 func (r *RectangleImpl) area() float64 {
 	return r.height + r.width
+}
+
+// 6.Define consumer methods provider
+func (c *Circle) perimeter() float64 {
+	return c.calc.perimeter()
+}
+
+func (c *Circle) area() float64 {
+	return c.calc.area()
+}
+
+func (r *Rectangle) perimeter() float64 {
+	return r.calc.perimeter()
+}
+
+func (r *Rectangle) area() float64 {
+	return r.calc.area()
 }
 
 // Main goroutine
