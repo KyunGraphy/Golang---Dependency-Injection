@@ -5,7 +5,7 @@ import (
 	"math"
 )
 
-// Initialize the structure of shapes
+// 1.Initialize the structure of shapes
 type Circle struct {
 	radius float64
 	calc   Calc
@@ -17,50 +17,77 @@ type Rectangle struct {
 	calc   Calc
 }
 
-// Initialize the methods interface of shapes
+// 2.Initialize the methods interface of shapes
 type Calc interface {
 	perimeter() float64
 	area() float64
 }
 
-// Initial new shape method
-func NewCircle(r float64) *Circle {
+// 3.Create specific implementation
+type CircleImpl struct {
+	radius float64
+}
+type RectangleImpl struct {
+	width, height float64
+}
+
+// 4.Initial new shape method
+func NewCircle(r float64, c Calc) *Circle {
 	return &Circle{
 		radius: r,
+		calc:   c,
 	}
 }
 
-func NewRectangle(w float64, h float64) *Rectangle {
+func NewRectangle(w float64, h float64, c Calc) *Rectangle {
 	return &Rectangle{
 		width:  w,
 		height: h,
+		calc:   c,
 	}
 }
 
-// Define the logic of shape methods
-func (shape Circle) perimeter() float64 {
-	return 2 * math.Pi * shape.radius
+// 5.Define the logic of shape methods
+func (c *Circle) perimeter() float64 {
+	return c.calc.perimeter()
 }
 
-func (shape Circle) area() float64 {
-	return math.Pi * math.Pow(shape.radius, 2)
+func (c *Circle) area() float64 {
+	return c.calc.area()
 }
 
-func (shape Rectangle) perimeter() float64 {
-	return 2 * (shape.height + shape.width)
+func (r *Rectangle) perimeter() float64 {
+	return r.calc.perimeter()
 }
 
-func (shape Rectangle) area() float64 {
-	return shape.height * shape.width
+func (r *Rectangle) area() float64 {
+	return r.calc.area()
+}
+
+// 6.Define consumer methods provider
+func (s *CircleImpl) perimeter() float64 {
+	return 2 * math.Pi * (s.radius)
+}
+
+func (s *CircleImpl) area() float64 {
+	return math.Pi * math.Pow(s.radius, 2)
+}
+
+func (r *RectangleImpl) perimeter() float64 {
+	return 2 * (r.height + r.width)
+}
+
+func (r *RectangleImpl) area() float64 {
+	return r.height + r.width
 }
 
 // Main goroutine
 func main() {
-	circle := NewCircle(4)
-	fmt.Println(circle.perimeter())
-	fmt.Println(circle.area())
+	circleConsumer := NewCircle(4, &CircleImpl{radius: 4})
+	fmt.Println(circleConsumer.perimeter())
+	fmt.Println(circleConsumer.area())
 
-	rectangle := NewRectangle(6, 8)
+	rectangle := NewRectangle(6, 8, &RectangleImpl{width: 6, height: 8})
 	fmt.Println(rectangle.perimeter())
 	fmt.Println(rectangle.area())
 }
